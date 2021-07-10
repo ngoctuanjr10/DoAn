@@ -1,0 +1,373 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<cstring>
+#include<algorithm>
+using namespace std;
+
+//
+
+struct student {
+	char No[10];
+	char ID[10];
+	char FullName[30];
+	double TotalMark;
+	double FinalMark;
+	double MidtermMark;
+	double OtherMark;
+};
+//
+struct NodeStudent {
+	student data;
+	NodeStudent* next;
+};
+//
+NodeStudent* createAStudent()
+{
+	student x;
+	cin.ignore();
+	cout << "nhap so thu tu: ";
+	cin.getline(x.No, 10,'\n');
+	cout << "nhap ma so sinh vien: ";
+	cin.getline(x.ID, 10,'\n');
+	cout << "nhap ho va ten: ";
+	cin.getline(x.FullName, 30,'\n');
+	cout << "nhap diem trung binh: ";
+	cin >> x.TotalMark;
+	cout << "nhap diem cuoi ki: ";
+	cin >> x.FinalMark;
+	cout << "nhap diem giua ki: ";
+	cin >> x.MidtermMark;
+	cout << "nhap diem thanh phan: ";
+	cin >> x.OtherMark;
+	NodeStudent* s = new NodeStudent;
+	if (s == NULL)
+	{
+		return NULL;
+	}
+	else
+	{
+		s->data = x;
+		s->next = NULL;
+		return s;
+	}
+}
+//
+struct Class {
+	NodeStudent* head;
+	NodeStudent* tail;
+};
+//
+void initClass(Class& x)
+{
+	x.head = NULL;
+	x.tail = NULL;
+}
+//
+void AddAStudentIntoClassAtFirst(Class& x)
+{
+	NodeStudent* s = createAStudent();
+	if (x.head == NULL)
+	{
+		x.head = s;
+		x.tail = s;
+	}
+	else
+	{
+		s->next = x.head;
+		x.head = s;
+	}
+}
+//
+void AddAStudentIntoClassAtLast(Class& x)
+{
+	NodeStudent* s = createAStudent();
+	if (x.head == NULL)
+	{
+		AddAStudentIntoClassAtFirst(x);
+	}
+	else
+	{
+		x.tail->next = s;
+		x.tail = s;
+	}
+}
+//
+struct course {
+	char id[10];
+	char name[30];
+	Class* fisrt;
+};
+//
+struct nodeCourse {
+	course data;
+	nodeCourse* next;
+};
+//
+nodeCourse* createNodeCourse()
+{
+	course x;
+	cin.ignore();
+	cout << "nhap ma khoa hoc: ";
+	cin.getline(x.id, 10,'\n');
+	cout << "nhap ten khoa hoc: ";
+	cin.getline(x.name, 10,'\n');
+	nodeCourse* c = new nodeCourse;
+	if (c == NULL)
+	{
+		return NULL;
+	}
+	else
+	{
+		c->data = x;
+		c->next = NULL;
+		return c;
+	}
+}
+//
+struct listCourse {
+	nodeCourse* head;
+	nodeCourse* tail;
+};
+//
+void initCourse(listCourse& l)
+{
+	l.head = NULL;
+	l.tail = NULL;
+}
+//
+void AddCourseInListAtFirst(listCourse&l,nodeCourse*c)
+{
+	if (l.head == NULL)
+	{
+		l.head = l.tail = NULL;
+	}
+	else
+	{
+		c->next = l.head;
+		l.head = c;
+	}
+}
+//
+void printListofCourse(listCourse l)
+{
+
+	nodeCourse* temp = l.head;
+	while (temp != NULL)
+	{
+		cout << "ma hoc phan: " << temp->data.id << "\n";
+		cout << "ten hoc phan: " << temp->data.name << "\n";
+		temp = temp->next;
+	}
+}
+//
+void addCourseInListAtLast(listCourse& l, nodeCourse* c)
+{
+	if (l.head == NULL)
+	{
+		AddCourseInListAtFirst(l, c);
+	}
+	else
+	{
+		l.tail->next = c;
+		l.tail = c;
+	}
+}
+//
+struct SchoolYear {
+	char name[10];
+	Semester* sem1;
+	Semester* sem2;
+	Semester* sem3;
+};
+//
+struct Semester {
+	char name[10];
+	Class* cl;
+};
+//
+void MenuStaff()
+{
+
+	cout << "1.create a school year.\n";
+	cout << "2.create a class.\n";
+	cout << "3.add a student.\n";
+	cout << "4.create a semester.\n";
+	cout << "5.create a course registation session.\n";
+	cout << "6.view list of course.\n";
+	cout << "7.update course information.\n";
+	cout << "8.delete course.\n";
+	int choice = 0;
+	cout << "lua chon cua ban: ";
+	cin >> choice;
+	listCourse l;
+	initCourse(l);
+	if (choice == 1)
+	{
+
+	}
+	else if (choice == 2)
+	{
+	
+	}
+	else if (choice == 3)
+	{
+
+	}
+	else if (choice == 4)
+	{
+		nodeCourse* x = createNodeCourse();
+		addCourseInListAtLast(l, x);
+	}
+	else if (choice == 5)
+	{
+		printListofCourse(l);
+
+	}
+}
+//
+void MenuStudent()
+{
+	cout << "-----STUDENT MENU-----\n";
+	cout << "1.Log in\n";
+	cout << "2.Enroll\n";
+	cout << "3.view list of enrolled courses\n";
+	cout << "4.remove a course from enrolled list\n";
+	cout << "5.view list of my course\n";
+	cout << "6.view list of classes\n";
+	cout << "7.view list of student in a class\n";
+	cout << "7.view list of course\n";
+	cout << "8.view list of student in a course\n";
+	int choice = 0;
+	cout << "lua chon cua ban: ";
+	cin >> choice;
+}
+//
+void MainMenu()
+{
+	cout << "-----MENU-----\n";
+	cout << "1. Staff.\n";
+	cout << "2. Student.\n";
+	int choice = 0;
+	cout << "Lua chon cua ban: ";
+	cin >> choice;
+	if (choice == 1)
+	{
+		MenuStaff();
+	}
+	else if (choice == 2)
+	{
+		MenuStudent();
+	}
+}
+//
+void Login()
+{
+	string
+		command, //to choose what to do each time
+		name, password, //the ones that are found in the file
+		inName, inPassword, //the ones you are going to input from keyboard
+		registerName, registerPassword; //also what you're going to input
+		//and if you know C strings, just replace that with something like
+		/*
+		char
+		command[9],
+		name[31], password[31], //it could be any size, but like this you have got 30 characters at your
+		//disposal, if you consider it to be enough
+		inName[31], inPassword[31],
+		registerName[31], registerPassword[31];
+		*/
+	while (1)
+	{
+		cout << "(register/exit/login)\n"
+			<< "Command: ";
+		getline(cin, command);
+		//(for C strings)
+		//cin.get(command, 9);
+		//cin.get();
+		if (command == "exit") //(for C strings) if (!strcmp(command, "exit"))
+		{
+			return;
+		}
+		if (command == "register") //(for C strings) if (!strcmp(command, "register"))
+		{
+			//open file for registration
+			ofstream g("registration.txt"); //ofstream is the one for getting data from the file, 
+			//and the file does not even have to exist. If it's ofstream, it'll take care of it for you.
+			//but be warned that if there is a file called "registration.txt" in the name folder as the
+			//.exe file, the contents will be deleted
+			if (!g.is_open()) //if it's not open, then there is no such file with the given name inside
+			//the folder (that is, in the folder where the .exe file is going to be)
+			{
+				cout << "could not open file\n"; //just so that you know why it won't work if it doesn't
+				return;
+			}
+			cout << "\n\n\n" //3 newlines
+				<< "New Username: ";
+			getline(cin, registerName); //input from keyboard will go into registerName
+			cout << "New Password: ";
+			getline(cin, registerPassword); //input from keyboard will go into registerPassword
+			g << registerName; //this basically says "put whatever's to the right (registerName) into
+			//g ("registration.txt")".
+			g << '\n'; //and now there will be a new line
+			g << registerPassword; //and now the password
+			//all placed safely in the file that g opened
+			g.close(); //always make sure you close the file, or else you might end up with some nasty
+			//stuff in the memory
+		}
+		if (command == "login") //(for C strings) if (!strcmp(command, "login"))
+		{
+			//open file, and then put the name and password into the strings
+			ifstream f("registration.txt"); //ifstream is the one for getting data from the file, and
+			//let us assume you've already created a file called "registration.txt"
+			if (!f.is_open()) //if it's not open, then there is no such file with the given name inside
+			//the folder (that is, in the folder where the .exe file is going to be)
+			{
+				cout << "could not open file\n"; //just so that you know why it won't work if it doesn't
+				return;
+			}
+			getline(f, name, '\n'); //reads the user name from file f (which is using "registration.txt")
+			getline(f, password, '\n'); //reads the password from file f (which is using "registration.txt")
+			//also, if you tell the file to get you that text up until '\n', that's when you know it reads
+			//the whole line at most, and won't go any further
+			//and that is done by the 3rd parameter
+			f.close(); //you don't need it open now, since you have the name and password from the file
+
+			//login
+			while (1)
+			{
+				//you are going to input the name and password here
+				cout << "\n\n\n"
+					<< "Enter Username: ";
+				getline(cin, inName);
+				cout << "Enter Password: ";
+				getline(cin, inPassword);
+				//or this, if you are working with C strings (second version of declaration)
+				//cin.get(inName, 31);
+				//cin.get();
+				//cin.get(inPassword, 31);
+				//cin.get();
+				//and the "cin.get()" after each input line is necessary, or else[...]
+				//no idea what's happening inside istream, but it's mandatory if you don't want your
+				//input to get stuck or worse
+				if (inName == name && inPassword == password)
+				{
+					cout << "Login Successful\n" //the '\n' is a character, so that's why I can add it 
+					//and it will automatically output a newline in console, alongside the string
+						<< "Welcome, "
+						<< inName;
+					break; //just exit the while loop if you've entered the valid account
+				}
+				cout << "incorrect name or password\n"; //if you haven't entered the valid account,
+				//then the while loop is not done yet. So that's why this output is without condition
+			}
+			//now do something about the account
+		}
+		cout << "\n\n\n\n\n"; //give it 5 newlines
+	}
+}
+int main()
+{
+	Login();
+	return 1;
+}
