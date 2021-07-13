@@ -24,187 +24,137 @@ struct NodeStudent {
 //
 NodeStudent* createAStudent()
 {
-	student x;
+	student s;
 	cin.ignore();
 	cout << "nhap so thu tu: ";
-	cin.getline(x.No, 10,'\n');
+	cin.getline(s.No, 10,'\n');
 	cout << "nhap ma so sinh vien: ";
-	cin.getline(x.ID, 10,'\n');
+	cin.getline(s.ID, 10,'\n');
 	cout << "nhap ho va ten: ";
-	cin.getline(x.FullName, 30,'\n');
+	cin.getline(s.FullName, 30,'\n');
 	cout << "nhap diem trung binh: ";
-	cin >> x.TotalMark;
+	cin >> s.TotalMark;
 	cout << "nhap diem cuoi ki: ";
-	cin >> x.FinalMark;
+	cin >> s.FinalMark;
 	cout << "nhap diem giua ki: ";
-	cin >> x.MidtermMark;
+	cin >> s.MidtermMark;
 	cout << "nhap diem thanh phan: ";
-	cin >> x.OtherMark;
-	NodeStudent* s = new NodeStudent;
-	if (s == NULL)
+	cin >> s.OtherMark;
+	NodeStudent* p = new NodeStudent;
+	if (p == NULL)
 	{
 		return NULL;
 	}
 	else
 	{
-		s->data = x;
-		s->next = NULL;
-		return s;
+		p->data = s;
+		p->next = NULL;
+		return p;
 	}
 }
 //
-struct Class {
+struct listStudent {
 	NodeStudent* head;
 	NodeStudent* tail;
 };
 //
-void initClass(Class& x)
-{
-	x.head = NULL;
-	x.tail = NULL;
-}
-//
-void AddAStudentIntoClassAtFirst(Class& x)
-{
-	NodeStudent* s = createAStudent();
-	if (x.head == NULL)
-	{
-		x.head = s;
-		x.tail = s;
-	}
-	else
-	{
-		s->next = x.head;
-		x.head = s;
-	}
-}
-//
-void AddAStudentIntoClassAtLast(Class& x)
-{
-	NodeStudent* s = createAStudent();
-	if (x.head == NULL)
-	{
-		AddAStudentIntoClassAtFirst(x);
-	}
-	else
-	{
-		x.tail->next = s;
-		x.tail = s;
-	}
-}
-//
-struct course {
-	char id[10];
-	char name[30];
-	Class* fisrt;
-};
-//
-struct nodeCourse {
-	course data;
-	nodeCourse* next;
-};
-//
-nodeCourse* createNodeCourse()
-{
-	course x;
-	cin.ignore();
-	cout << "nhap ma khoa hoc: ";
-	cin.getline(x.id, 10,'\n');
-	cout << "nhap ten khoa hoc: ";
-	cin.getline(x.name, 10,'\n');
-	nodeCourse* c = new nodeCourse;
-	if (c == NULL)
-	{
-		return NULL;
-	}
-	else
-	{
-		c->data = x;
-		c->next = NULL;
-		return c;
-	}
-}
-//
-struct listCourse {
-	nodeCourse* head;
-	nodeCourse* tail;
-};
-//
-void initCourse(listCourse& l)
-{
-	l.head = NULL;
-	l.tail = NULL;
-}
-//
-void AddCourseInListAtFirst(listCourse&l,nodeCourse*c)
-{
-	if (l.head == NULL)
-	{
-		l.head = l.tail = NULL;
-	}
-	else
-	{
-		c->next = l.head;
-		l.head = c;
-	}
-}
-//
-void printListofCourse(listCourse l)
-{
-
-	nodeCourse* temp = l.head;
-	while (temp != NULL)
-	{
-		cout << "ma hoc phan: " << temp->data.id << "\n";
-		cout << "ten hoc phan: " << temp->data.name << "\n";
-		temp = temp->next;
-	}
-}
-//
-void addCourseInListAtLast(listCourse& l, nodeCourse* c)
-{
-	if (l.head == NULL)
-	{
-		AddCourseInListAtFirst(l, c);
-	}
-	else
-	{
-		l.tail->next = c;
-		l.tail = c;
-	}
-}
-//
 struct SchoolYear {
 	char name[10];
-	Semester* sem1;
-	Semester* sem2;
-	Semester* sem3;
+	Classes x;
 };
 //
-struct Semester {
-	char name[10];
-	Class* cl;
+struct nodeSchoolYear {
+	SchoolYear sch;
+	nodeSchoolYear* next;
 };
+//
+struct listSchoolYear {
+	nodeSchoolYear* head;
+	nodeSchoolYear* tail;
+};
+//
+struct Classes {
+	char name[9];
+	listStudent l;
+};
+//
+struct nodeClasses {
+	Classes data;
+	nodeClasses* next;
+};
+//
+struct listClasses {
+	nodeClasses* head;
+	nodeClasses* tail;
+};
+//
+void initClass(listClasses& cla)
+{
+	cla.head = NULL;
+	cla.tail = NULL;
+}
+//
+void AddAStudentIntoClassAtFirst(listStudent& cla)
+{
+	NodeStudent* s = createAStudent();
+	if (cla.head == NULL)
+	{
+		cla.head = s;
+		cla.tail = s;
+	}
+	else
+	{
+		s->next = cla.head;
+		cla.head = s;
+	}
+}
+//
+void AddAStudentIntoClassAtLast(listStudent& cla)
+{
+	NodeStudent* s = createAStudent();
+	if (cla.head == NULL)
+	{
+		cla.head = s;
+		cla.tail = s;
+	}
+	else
+	{
+		cla.tail->next = s;
+		cla.tail = s;
+	}
+}
 //
 void MenuStaff()
 {
 
-	cout << "1.create a school year.\n";
-	cout << "2.create a class.\n";
-	cout << "3.add a student.\n";
-	cout << "4.create a semester.\n";
-	cout << "5.create a course registation session.\n";
-	cout << "6.view list of course.\n";
-	cout << "7.update course information.\n";
+	cout << "1. Begin a school year.\n";
+	cout << "2. Create a class.\n";
+	cout << "3. Add a student.\n";
+	cout << "4. Create a semester.\n";
+	cout << "5. Create a course registation session.\n";
+	cout << "6. View list of course.\n";
+	cout << "7.pdate course information.\n";
 	cout << "8.delete course.\n";
 	int choice = 0;
 	cout << "lua chon cua ban: ";
 	cin >> choice;
-	listCourse l;
-	initCourse(l);
+	
 	if (choice == 1)
 	{
-
+		cout << "1. Create a class.\n";
+		cout << "2. Exit.\n";
+		int choice1 = 0;
+		cout << "lua chon cua ban: ";
+		cin >> choice1;
+		if (choice1 == 1)
+		{
+			cout << "1. Add a student.\n";
+			cout << "2. Exit.\n";
+		}
+		else
+		{
+			MenuStaff();
+		}
 	}
 	else if (choice == 2)
 	{
@@ -212,16 +162,6 @@ void MenuStaff()
 	}
 	else if (choice == 3)
 	{
-
-	}
-	else if (choice == 4)
-	{
-		nodeCourse* x = createNodeCourse();
-		addCourseInListAtLast(l, x);
-	}
-	else if (choice == 5)
-	{
-		printListofCourse(l);
 
 	}
 }
@@ -366,6 +306,7 @@ void Login()
 		cout << "\n\n\n\n\n"; //give it 5 newlines
 	}
 }
+//
 int main()
 {
 	Login();
