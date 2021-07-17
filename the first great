@@ -6,17 +6,28 @@
 using namespace std;
 
 //
-
 struct student {
 	char No[10];
 	char ID[10];
-	char FullName[30];
-	double TotalMark;
-	double FinalMark;
-	double MidtermMark;
-	double OtherMark;
+	char FullName[10];
+	char dateofBirth[10];
+	char socialID[10];
 };
 //
+void inputAStudent(student& s)
+{
+	cout << "nhap so thu tu: ";
+	cin.getline(s.No, 10, '\n');
+	cout << "nhap ma so sinh vien: ";
+	cin.getline(s.ID, 10, '\n');
+	cout << "nhap ho va ten: ";
+	cin.getline(s.FullName, 10, '\n');
+	cout << "nhap ngay sinh: ";
+	cin.getline(s.dateofBirth, 10, '\n');
+	cout << "nhap cmnd: ";
+	cin.getline(s.socialID, 10, '\n');
+	cin.ignore();
+}
 struct NodeStudent {
 	student data;
 	NodeStudent* next;
@@ -25,21 +36,7 @@ struct NodeStudent {
 NodeStudent* createAStudent()
 {
 	student s;
-	cin.ignore();
-	cout << "nhap so thu tu: ";
-	cin.getline(s.No, 10,'\n');
-	cout << "nhap ma so sinh vien: ";
-	cin.getline(s.ID, 10,'\n');
-	cout << "nhap ho va ten: ";
-	cin.getline(s.FullName, 30,'\n');
-	cout << "nhap diem trung binh: ";
-	cin >> s.TotalMark;
-	cout << "nhap diem cuoi ki: ";
-	cin >> s.FinalMark;
-	cout << "nhap diem giua ki: ";
-	cin >> s.MidtermMark;
-	cout << "nhap diem thanh phan: ";
-	cin >> s.OtherMark;
+	inputAStudent(s);
 	NodeStudent* p = new NodeStudent;
 	if (p == NULL)
 	{
@@ -58,40 +55,10 @@ struct listStudent {
 	NodeStudent* tail;
 };
 //
-struct SchoolYear {
-	char name[10];
-	Classes x;
-};
-//
-struct nodeSchoolYear {
-	SchoolYear sch;
-	nodeSchoolYear* next;
-};
-//
-struct listSchoolYear {
-	nodeSchoolYear* head;
-	nodeSchoolYear* tail;
-};
-//
-struct Classes {
-	char name[9];
-	listStudent l;
-};
-//
-struct nodeClasses {
-	Classes data;
-	nodeClasses* next;
-};
-//
-struct listClasses {
-	nodeClasses* head;
-	nodeClasses* tail;
-};
-//
-void initClass(listClasses& cla)
+void initListStudent(listStudent& l)
 {
-	cla.head = NULL;
-	cla.tail = NULL;
+	l.head = NULL;
+	l.tail = NULL;
 }
 //
 void AddAStudentIntoClassAtFirst(listStudent& cla)
@@ -109,9 +76,8 @@ void AddAStudentIntoClassAtFirst(listStudent& cla)
 	}
 }
 //
-void AddAStudentIntoClassAtLast(listStudent& cla)
+void AddAStudentIntoClassAtLast(listStudent& cla, NodeStudent* s)
 {
-	NodeStudent* s = createAStudent();
 	if (cla.head == NULL)
 	{
 		cla.head = s;
@@ -124,8 +90,185 @@ void AddAStudentIntoClassAtLast(listStudent& cla)
 	}
 }
 //
+void inputListStudent(listStudent& l)
+{
+	int n;
+	cout << "nhap so sinh vien: ";
+	cin >> n;
+	while (n--)
+	{
+		NodeStudent* p = createAStudent();
+		AddAStudentIntoClassAtLast(l, p);
+	}
+}
+//
+void printListStudent(listStudent l)
+{
+	NodeStudent* cur = l.head;
+	while (cur != NULL)
+	{
+		cout << "so thu tu: " << cur->data.No << "\n";
+		cout << "id: " << cur->data.ID << "\n";
+		cout << "ho ten: " << cur->data.FullName << "\n";
+		cout << "cmnd: " << cur->data.socialID << "\n\n";
+		cout << "ngay sinh: " << cur->data.dateofBirth << "\n";
+		cur = cur->next;
+	}
+}
+//
+struct Classes {
+	char name[9];
+	listStudent l;
+};
+//
+struct nodeClasses {
+	Classes data;
+	nodeClasses* next;
+};
+//
+nodeClasses* createNodeClass()
+{
+	Classes c;
+	cin.ignore();
+	cout << "nhap ten lop hoc: ";
+	cin.getline(c.name, 10);
+	initListStudent(c.l);
+	nodeClasses* p = new nodeClasses;
+	if (p == NULL)
+	{
+		return NULL;
+	}
+	else
+	{
+		p->data = c;
+		p->next = NULL;
+		return p;
+	}
+}
+struct listClasses {
+	nodeClasses* head;
+	nodeClasses* tail;
+};
+//
+void initListClass(listClasses& cla)
+{
+	cla.head = NULL;
+	cla.tail = NULL;
+}
+//
+void addAclassAtFirst(listClasses& l, nodeClasses* p)
+{
+	nodeClasses* c = new nodeClasses;
+	if (l.head == NULL)
+	{
+		l.head = l.tail = p;
+	}
+	else
+	{
+		p->next = l.head;
+		l.head = p;
+	}
+}
+//
+void addAclassAtLast(listClasses& l, nodeClasses* p)
+{
+	nodeClasses* c = new nodeClasses;
+	if (l.head == NULL)
+	{
+		l.head = l.tail = p;
+	}
+	else
+	{
+		l.tail->next = p;
+		l.tail = p;
+	}
+}
+//
+struct SchoolYear {
+	char name[10];
+	listClasses x;
+};
+//
+void inputAschoolYear(SchoolYear& s)
+{
+	cout << "nhap ten nam hoc: ";
+	cin.getline(s.name, 10);
+	initListClass(s.x);
+	cin.ignore();
+}
+struct nodeSchoolYear {
+	SchoolYear schData;
+	nodeSchoolYear* next;
+};
+//
+nodeSchoolYear* createNodeSY(SchoolYear& sy)
+{
+	inputAschoolYear(sy);
+	nodeSchoolYear* p = new nodeSchoolYear;
+	if (p == NULL)
+	{
+		return NULL;
+	}
+	else
+	{
+		p->schData = sy;
+		p->next = NULL;
+		return p;
+	}
+}
+struct listSchoolYear {
+	nodeSchoolYear* head;
+	nodeSchoolYear* tail;
+};
+//
+void AddASchoolYearAtFirst(listSchoolYear& l, nodeSchoolYear* p)
+{
+	if (l.head == NULL)
+	{
+		l.head = p;
+		l.tail = p;
+	}
+	else
+	{
+		p->next = l.head;
+		l.head = p;
+	}
+}
+//
+void AddASchoolYearAtLast(listSchoolYear& l, nodeSchoolYear* p)
+{
+	if (l.head == NULL)
+	{
+		l.head = p;
+		l.tail = p;
+	}
+	else
+	{
+		l.tail->next = p;
+		l.tail = p;
+	}
+}
+//
+void initListSY(listSchoolYear& l)
+{
+	l.head = NULL;
+	l.tail = NULL;
+}
+//
+void printListSY(listSchoolYear& l)
+{
+	nodeSchoolYear* cur = l.head;
+	while (cur != NULL)
+	{
+		cout << "nam hoc: " << cur->schData.name << "\n";
+		cur = cur->next;
+	}
+}
+//
 void MenuStaff()
 {
+	SchoolYear sch;
+	listSchoolYear l;
 
 	cout << "1. Begin a school year.\n";
 	cout << "2. Create a class.\n";
@@ -138,7 +281,6 @@ void MenuStaff()
 	int choice = 0;
 	cout << "lua chon cua ban: ";
 	cin >> choice;
-	
 	if (choice == 1)
 	{
 		cout << "1. Create a class.\n";
@@ -162,7 +304,6 @@ void MenuStaff()
 	}
 	else if (choice == 3)
 	{
-
 	}
 }
 //
@@ -309,6 +450,14 @@ void Login()
 //
 int main()
 {
-	Login();
-	return 1;
+	listSchoolYear l;
+	initListSY(l);
+	SchoolYear sy;
+	nodeSchoolYear* p = createNodeSY(sy);
+	AddASchoolYearAtLast(l, p);
+	printListSY(l);
+	nodeClasses* c = createNodeClass();
+	nodeClasses* cl = createNodeClass();
+	addAclassAtLast(l.head->schData.x, cl);
+	return 0;
 }
